@@ -16,6 +16,7 @@ export default function useMessageInitiator(
         // Initial load
         loader().then((messages) => {
             messagesSetter(messages);
+        }).finally(() => {
             setInitialMessagesLoaded(true);
         });
     }, [loader, messagesSetter]);

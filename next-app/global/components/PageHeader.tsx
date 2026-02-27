@@ -30,7 +30,7 @@ export default function PageHeader(
         {ImageComponent}
         <div className={"grow"}>
             <h6 className={"line-clamp-1"}>{title}</h6>
-            {subTitle && <p className={"line-clamp-1 text-sm text-muted-foreground"}>{subTitle}</p>}
+            {subTitle && <p className={"line-clamp-1 text-xs md:text-sm text-muted-foreground"}>{subTitle}</p>}
         </div>
         <div className={"flex gap-4 items-center"}>
             {otherActionIcons}

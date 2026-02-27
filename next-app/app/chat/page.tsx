@@ -16,9 +16,7 @@ export default function Page() {
     return (
         <PageResponsiveBoxContainer>
 
-            <div className={cn(
-                "flex-1/4 border-e border-border overflow-y-scroll relative rounded-lg",
-            )}>
+            <div className={cn("flex-1/4 border-e border-border overflow-y-scroll relative rounded-lg")}>
                 <ChatsList/>
             </div>
 
@@ -33,7 +31,7 @@ export default function Page() {
                     <span className={"text-sm text-muted-foreground"}>{_t("blank_chat_placeholder")}</span>
                 </div>}
 
-                {(hasOpenedChat && openedChat) && <ChatBox chat={openedChat}/>}
+                {(hasOpenedChat && openedChat) && <ChatBox chat={openedChat} key={openedChat.id}/>}
 
             </div>
 

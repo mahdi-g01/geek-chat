@@ -29,7 +29,8 @@ return Application::configure(basePath: dirname(__DIR__))
             "device" => UpdateUserLastActiveDevice::class,
         ]);
         $middleware->convertEmptyStringsToNull();
-        $middleware->append(DetectUserLanguage::class);
+        /** You can activate this middleware, to return messages based on user provided locale */
+        // $middleware->append(DetectUserLanguage::class);
         $middleware->append(ForceJSONResponseMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {

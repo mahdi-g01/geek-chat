@@ -86,7 +86,7 @@ class StartupController extends Controller
             return jsonResponse([
                 'stage' => StartupStages::STAGE_0_IDLE->value
             ], status: false, message: $configCheckResult["messages"][0] ?? __("startup.messages.something_is_wrong"));
-        
+
         $dbCheckResult = $this->services->checkDatabaseConnection();
         if (!$dbCheckResult["status"])
             return jsonResponse([
@@ -131,7 +131,7 @@ class StartupController extends Controller
         return jsonResponse(message: __("startup.messages.db_migrated_and_seeded"));
     }
 
-    public function setupAdminUser(Request $request): JsonResponse
+    public function setupAdminUserAndFinalizeStartup(Request $request): JsonResponse
     {
         if ($this->services->getCurrentStartupStage() != StartupStages::STAGE_4_DB_SEEDED)
             return jsonResponse(status: false, message: __("startup.messages.startup_is_not_in_right_stage"));
@@ -164,9 +164,13 @@ class StartupController extends Controller
 
         SystemSetting::set(SystemSettingKeys::SETUP_STAGE, StartupStages::STAGE_FINAL_APP_READY->value);
 
-        $this->services->handleStorageFolderLink();
+        SystemSetting::set(SystemSettingKeys::LANGUAGE, env("APP_LOCALE"));
 
         $this->services->handlePostConfiguration();
+
+        $this->services->handleStorageFolderLink();
+
+        $this->services->cacheConfig();
 
         return jsonResponse(message: __("startup.messages.app_is_ready"));
 

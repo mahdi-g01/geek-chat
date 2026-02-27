@@ -9,7 +9,8 @@ import RootHTMLContainer from "@/global/components/RootHTMLContainer";
 
 export const metadata: Metadata = {
     title: "GeekChat",
-    description: "",
+    description: "Easy to deploy web-based messenger, powered by Laravel API and Next.js",
+    manifest: "/manifest.json",
 };
 
 export default function RootLayout(
@@ -25,11 +26,11 @@ export default function RootLayout(
             <LocalizationProvider>
                 <SystemSettingsProvider>
                     <UserProvider>
-                        <Suspense>
-                            <RootHTMLContainer>
-                                {children}
-                            </RootHTMLContainer>
-                        </Suspense>
+                        <RootHTMLContainer>
+                            <Suspense>
+                                    {children}
+                            </Suspense>
+                        </RootHTMLContainer>
                     </UserProvider>
                 </SystemSettingsProvider>
             </LocalizationProvider>

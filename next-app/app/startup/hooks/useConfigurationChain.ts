@@ -15,11 +15,11 @@ export default function useConfigurationChain(...params: Parameters<typeof useEn
     const [hasError, setHasError] = useState(false);
 
     const loading = useMemo(() => {
-        return configuringEnv ?? checkingConfig ?? initiatingDb ?? null;
+        return (configuringEnv || checkingConfig || initiatingDb) ?? false;
     }, [checkingConfig, configuringEnv, initiatingDb])
 
     const errorText = useMemo(() => {
-        return envConfigurationError ?? configCheckingError ?? dbInitiationError ?? null;
+        return (envConfigurationError || configCheckingError || dbInitiationError) ?? null;
     }, [configCheckingError, dbInitiationError, envConfigurationError])
 
     const handleError = () => {
@@ -40,7 +40,7 @@ export default function useConfigurationChain(...params: Parameters<typeof useEn
                 return;
             }
 
-            await sleep(500);
+            await sleep(100);
 
             setStep("2");
             const checkedSuccessfully = await handleConfigCheck();
@@ -50,7 +50,7 @@ export default function useConfigurationChain(...params: Parameters<typeof useEn
                 return;
             }
 
-            await sleep(500);
+            await sleep(100);
 
             setStep("3");
             const dbInitiatedSuccessfully = await handleDbInitiation();

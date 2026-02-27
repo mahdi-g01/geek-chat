@@ -49,7 +49,7 @@ export default function Page() {
     // Configurations states
     const [selectedLanguage, setSelectedLanguage] = useState("en");
     const [dbConfigs, setDbConfigs] = useState({
-        engine: "sqlite",
+        engine: "mysql",
         host: "localhost",
         port: "3306",
         database: "",

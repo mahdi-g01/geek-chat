@@ -160,7 +160,8 @@ export default function ChatBox({chat}: { chat: Chat }) {
         <PageHeader onCloseClick={closeChat} ImageComponent={<AvatarImage chat={chat} size={55}/>}
                     title={chat?.title ?? ""} subTitle={chat?.description ?? undefined}
                     otherActionIcons={(isDialog && !isEncrypted)
-                        ? <Button size={"sm"} className={"w-[140px]"} onClick={handleEncryptedChatCreation}>
+                        ? <Button size={"sm"} className={"w-[110px] text-xs md:w-[140px] md:text-sm"}
+                                  onClick={handleEncryptedChatCreation}>
                             {encryptedDialogMaker.making
                                 ? <LoaderIcon className={"animate-spin"}/>
                                 : _t("start_encrypted_dialog")

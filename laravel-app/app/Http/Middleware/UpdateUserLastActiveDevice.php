@@ -23,7 +23,8 @@ class UpdateUserLastActiveDevice
         $publicKey = $request->header("X-Device-Public-Key");
 
         if (empty($publicKey) || !is_string($publicKey)) {
-            return jsonResponse([], false, __("auth.device_public_key_required"), 403);
+            return $next($request);
+//            return jsonResponse([], false, __("auth.device_public_key_required"), 403);
         }
 
         $userId = Auth::id();

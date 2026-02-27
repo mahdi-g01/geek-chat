@@ -89,6 +89,7 @@ class ChatController extends Controller
 
         $query = Chat::query()
             ->with(["members", "lastMessageModel", "encryptionProperty"])
+            ->orderBy("updated_at", "desc")
             ->whereHas("members", function ($query) {
                 $query->where("user_id", Auth::id());
             });
@@ -365,6 +366,8 @@ class ChatController extends Controller
             "display_type" => MessageDisplayType::MESSAGE
         ]);
 
+        $responseData = [];
+
         // Handling files if chat is not encrypted
         if ($chat->chat_type != ChatTypes::ENCRYPTED_DIALOG) {
 
@@ -372,7 +375,6 @@ class ChatController extends Controller
                 $fileStoreResults = $this->fileServices->storeChatFile($request->file("files"), $messageModel);
             }
 
-            $responseData = [];
             if (isset($fileStoreResults) && $fileStoreResults != null) {
                 $responseData["file_upload_results"] = $fileStoreResults;
             }

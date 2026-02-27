@@ -12,14 +12,14 @@ const RestApiContext = createContext<{
     client: ApiClient;
     apiTokenRetrieved: boolean;
     baseUrl: string;
-    apiToken: string|null;
-    setApiToken: (token: string|null)=>any;
+    apiToken: string | null;
+    setApiToken: (token: string | null) => any;
 } | undefined>(undefined);
 
 export const RestApiProvider = ({baseUrl, children}: { baseUrl: string, children: React.ReactNode }) => {
 
     const [apiTokenRetrieved, setApiTokenRetrieved] = useState<boolean>(false);
-    const [apiToken, setApiToken] = useState<string|null>(null);
+    const [apiToken, setApiToken] = useState<string | null>(null);
 
     const client = useMemo(() => {
 
@@ -34,7 +34,7 @@ export const RestApiProvider = ({baseUrl, children}: { baseUrl: string, children
         });
 
         apiClient.interceptors.request.use((req) => {
-            if(apiToken)
+            if (apiToken)
                 req.headers.set("Authorization", `Bearer ${apiToken}`)
             return req;
         });
@@ -47,10 +47,10 @@ export const RestApiProvider = ({baseUrl, children}: { baseUrl: string, children
     }, [baseUrl, apiToken]);
 
     useEffect(() => {
-        getPreference("api_token").then((token)=>{
-            if(token)
+        getPreference("api_token").then((token) => {
+            if (token)
                 setApiToken(token)
-        }).finally(()=>setApiTokenRetrieved(true))
+        }).finally(() => setApiTokenRetrieved(true))
     }, []);
 
     return (

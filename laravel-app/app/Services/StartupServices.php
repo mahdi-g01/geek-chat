@@ -464,6 +464,26 @@ class StartupServices
     }
 
     #[ArrayShape(['status' => "boolean", 'message' => "string"])]
+    public function cacheConfig(): array
+    {
+        try {
+
+            Artisan::call("config:cache");
+
+            return [
+                "status" => true,
+                "message" => __("startup.messages.cleared")
+            ];
+
+        } catch (\Exception $e) {
+            return [
+                "status" => false,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+
+    #[ArrayShape(['status' => "boolean", 'message' => "string"])]
     public function migrateDatabase(): array
     {
         try {
@@ -551,7 +571,6 @@ class StartupServices
             ];
         }
     }
-
 
     #[ArrayShape(['status' => "boolean", 'message' => "string"])]
     public function handleStorageFolderLink(): array

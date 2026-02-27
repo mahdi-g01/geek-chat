@@ -3,7 +3,7 @@ import React from "react";
 import {Chat} from "@/rest/types/Chat";
 
 export default function AvatarImage(
-    {user, chat, size = 50}: { user?: UserPublic | undefined, chat?: Chat, size?: number }) {
+    {user, chat, size = 40}: { user?: UserPublic | undefined, chat?: Chat, size?: number }) {
 
     const decidedAvatar = chat?.avatar_url ?? user?.avatar_url ?? null;
     const decidedRandomColor =

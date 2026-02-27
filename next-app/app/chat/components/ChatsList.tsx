@@ -30,7 +30,9 @@ export default function ChatsList() {
     const handleLogOut = () => {
         setLoggingOut(true);
         logoutUser()
-            .then(() => router.replace("/"))
+            .then(() => {
+                window.location.pathname = "/";
+            })
             .finally(() => setLoggingOut(false))
     }
 
@@ -88,7 +90,9 @@ export default function ChatsList() {
                 const isEncrypted = chat.chat_type == "encrypted_dialog";
 
                 return <div key={chat.id}
-                            onClick={() => openChat(chat)}
+                            onClick={() => {
+                                openChat(chat)
+                            }}
                             className={cn(
                                 "w-full p-5 flex items-center gap-5",
                                 openedChat?.id == chat.id ? "bg-card-foreground/10" : "hover:bg-card-foreground/10 cursor-pointer",

@@ -39,7 +39,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'user_name' => 'required|string',
             'password' => 'required|string',
-            'public_key' => 'required|string',
+            'public_key' => 'nullable|string',
             'device_name' => 'nullable|string|max:255',
             'device_type' => 'nullable|string|max:64',
         ]);
@@ -51,12 +51,13 @@ class AuthController extends Controller
 
         $user = User::query()->where("user_name", $validated["user_name"])->first();
 
-        $this->deviceManager->ensureDeviceForUser(
-            $user->id,
-            $validated["public_key"],
-            $validated["device_name"] ?? null,
-            $validated["device_type"] ?? null
-        );
+        if (isset($validated["public_key"]))
+            $this->deviceManager->ensureDeviceForUser(
+                $user->id,
+                $validated["public_key"],
+                $validated["device_name"] ?? null,
+                $validated["device_type"] ?? null
+            );
 
         $tokenTTL = Carbon::now()->addSeconds(
             intval(SystemSetting::get(SystemSettingKeys::USER_TOKEN_TTL, "2592000"))
@@ -84,7 +85,7 @@ class AuthController extends Controller
             "public_name" => "required|string|",
             "user_name" => "required|string|unique:users",
             "password" => "required|string|between:8,255",
-            'public_key' => 'required|string',
+            'public_key' => 'nullable|string',
             'device_name' => 'nullable|string|max:255',
             'device_type' => 'nullable|string|max:64',
         ]);
@@ -100,12 +101,13 @@ class AuthController extends Controller
             "last_seen_at" => Carbon::now(),
         ]);
 
-        $this->deviceManager->ensureDeviceForUser(
-            $user->id,
-            $validated["public_key"],
-            $validated["device_name"] ?? null,
-            $validated["device_type"] ?? null
-        );
+        if (isset($validated["public_key"]))
+            $this->deviceManager->ensureDeviceForUser(
+                $user->id,
+                $validated["public_key"],
+                $validated["device_name"] ?? null,
+                $validated["device_type"] ?? null
+            );
 
         $tokenTTL = Carbon::now()->addSeconds(
             intval(SystemSetting::get(SystemSettingKeys::USER_TOKEN_TTL, "2592000"))
@@ -127,11 +129,11 @@ class AuthController extends Controller
             abort(401);
 
         $validator = Validator::make($request->all(), [
-            'public_key' => 'required|string',
+            'public_key' => 'nullable|string',
         ]);
 
         $validated = $validator->validated();
-        $publicKey = $validated["public_key"];
+        $publicKey = $validated["public_key"] ?? "";
         $user = User::query()->find(Auth::id());
 
         if (!empty($publicKey)) {

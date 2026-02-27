@@ -32,7 +32,7 @@ export default function ChatMessagesList(
         <div className={"w-full flex items-center justify-center"}>
             {loadingMessages
                 ? <LoaderIcon className={"animate-spin my-[5px]"} size={26}/>
-                : <Button onClick={backwardLoadMessages} variant={"secondary"}>
+                : <Button onClick={backwardLoadMessages} className={"text-sm"} variant={"secondary"}>
                     {_t("load_more_messages")}
                 </Button>}
         </div>
@@ -70,6 +70,8 @@ function MessageBubble({message, cryptoKey}: {
 
     }, [cryptoKey, decrypt, message.message_body]);
 
+    const messageTextIsEmpty = `${(processedMessageBody ?? "").trim()}` === "";
+
     return <div className={cn(
         "px-4 gap-4",
         `flex w-full items-end ${isMe ? "flex-row justify-start" : "flex-row-reverse"}`,
@@ -78,16 +80,18 @@ function MessageBubble({message, cryptoKey}: {
         <AvatarImage user={message.user}/>
 
         <div
-            className={"bg-background rounded-md p-3 gap-3 flex flex-col min-w-[100px] max-w-[300px] lg:max-w-[500px] overflow-hidden"}>
+            className={"bg-background text-sm md:text-md rounded-md p-2 md:p-3 gap-3 flex flex-col min-w-[100px] max-w-[300px] lg:max-w-[500px] overflow-hidden"}>
             {message.files?.map(file => {
                 return <FileView key={file.id} file={file} messageId={message.id} chatId={message.chat_id}/>
             })}
-            <ReactMarkdown>
-                {processedMessageBody}
-            </ReactMarkdown>
+            {(!messageTextIsEmpty) && <div style={{ whiteSpace: "pre-line" }}>
+                <ReactMarkdown>
+                    {processedMessageBody}
+                </ReactMarkdown>
+            </div>}
         </div>
 
-        <span className={"text-sm font-bold text-muted-foreground"}>
+        <span className={"text-xs md:text-sm font-bold text-muted-foreground"}>
             <small>{_d(message.created_at, true)}</small>
         </span>
 
@@ -117,22 +121,22 @@ function FileView({file, messageId, chatId}: {
 
     if (previewThePossibleImageFile)
         return <div className={"w-full"}>
-            {fetchingBlob ? <div className={"w-[300px] h-[400px] flex items-center justify-center"}>
+            {fetchingBlob ? <div className={"w-[150px] h-[250px] md:w-[300px] md:h-[400px] flex items-center justify-center"}>
                 <LoaderIcon className={"animate-spin"}/>
             </div> : (
                 fileBlob &&
                 <img alt={file.name} onClick={download}
-                     className={"w-full object-cover max-h-[400px] cursor-pointer rounded-sm"}
+                     className={"w-full object-cover max-h-[250px] md:max-h-[400px] cursor-pointer rounded-sm"}
                      src={URL.createObjectURL(fileBlob)}/>
             )}
         </div>
 
     else return <div onClick={download} className={cn(
-        "flex bg-card-foreground/6 min-w-[250px] w-full p-3 gap-4 rounded-sm",
+        "flex bg-card-foreground/6 min-w-[100px] md:min-w-[250px] w-full p-3 gap-4 rounded-sm",
         "group cursor-pointer hover:bg-card-foreground/10"
     )}>
 
-        <div className={"bg-primary p-4 rounded-full"}>
+        <div className={"bg-primary p-3 md:p-4 rounded-full"}>
             {fetchingBlob ? <LoaderIcon className={"animate-spin"} color={"white"}/> : <>
 
                 <div className={"hidden group-hover:contents"}>
@@ -146,9 +150,9 @@ function FileView({file, messageId, chatId}: {
             </>}
         </div>
 
-        <div className={"w-full overflow-hidden flex flex-col justify-between"}>
-            <h6 className={"line-clamp-1"}>{file.name}</h6>
-            <div className={"flex justify-between text-sm text-muted-foreground"}>
+        <div className={"w-full overflow-hidden text-xs md:text-sm flex flex-col justify-between"}>
+            <h6 className={"line-clamp-1 w-full"}>{file.name}</h6>
+            <div className={"flex justify-between text-muted-foreground"}>
                 <span>{file.extension.toUpperCase()}</span>
                 {file.size && <span style={{direction: "ltr"}}>{`${byteToMegabyte(file.size)} mb`}</span>}
             </div>

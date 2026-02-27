@@ -9,8 +9,11 @@ use Carbon\Carbon;
 class DeviceManagerService
 {
 
-    public function findDeviceByUserAndPublicKey(int $userId, string $publicKey): ?UserDevice
+    public function findDeviceByUserAndPublicKey(int $userId, string|null $publicKey): ?UserDevice
     {
+        if ($publicKey === null) {
+            return null;
+        }
         return UserDevice::query()
             ->where("user_id", $userId)
             ->where("public_key", $publicKey)

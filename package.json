@@ -1,13 +1,15 @@
 {
   "name": "geek-chat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy to deploy messenger webapp, powered by Laravel + NextJS",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "next-dev": "npm --prefix next-app run dev",
     "laravel-dev": "cd laravel-app & php artisan serve",
-    "dev": "concurrently \"@next-dev\" \"@laravel-dev\""
+    "dev": "concurrently \"@next-dev\" \"@laravel-dev\"",
+    "build": "node scripts/build.js"
   },
-  "author": "Mahdi Khansari",
+  "author": "Mahdi Khansari (geekop.ir)",
   "license": "ISC"
 }

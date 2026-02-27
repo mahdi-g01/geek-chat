@@ -57,11 +57,12 @@ export default function Page() {
             ...responseBatch
         }).then((res) => {
             setPreference("api_token", res.token).then(() => {
-                router.replace("/chat");
                 setApiToken(res.token);
+                window.location.pathname = "/chat";
             })
         }).catch((e: ResponseError) => {
-            setError(e.message)
+            setError(e.message);
+            reloadCaptcha();
         }).finally(() => {
             setLoading(false)
         })

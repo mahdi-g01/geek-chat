@@ -63,7 +63,8 @@ export default function Page() {
                 setApiToken(res.token)
             })
         }).catch((e: ResponseError) => {
-            setError(e.message)
+            setError(e.message);
+            reloadCaptcha();
         }).finally(() => {
             setLoading(false)
         })

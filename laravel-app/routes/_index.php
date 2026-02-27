@@ -43,7 +43,7 @@ Route::prefix('/startup')
 
         Route::post('/initiate-db', [StartupController::class, "migrateAndSeedDatabase"]);
 
-        Route::post('/setup-admin', [StartupController::class, "setupAdminUser"]);
+        Route::post('/setup-admin', [StartupController::class, "setupAdminUserAndFinalizeStartup"]);
 
     });
 

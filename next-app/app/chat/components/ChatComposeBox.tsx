@@ -30,6 +30,8 @@ export default function ChatComposeBox(
 
     const {encrypt} = useEncryptedDialogHelper();
 
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
     const onMessageSuccessfullySent = useCallback(() => {
         formRef.current?.reset();
     }, []);
@@ -71,15 +73,15 @@ export default function ChatComposeBox(
     // Auto error text hider
     useEffect(() => {
         if (errorText) {
-            const to = setTimeout(()=>{
+            const to = setTimeout(() => {
                 setErrorText(undefined)
             }, 2000);
 
             return () => clearTimeout(to);
         }
     }, [errorText]);
-    
-    const sendingFilesAllowed = useMemo(()=>{
+
+    const sendingFilesAllowed = useMemo(() => {
         return systemSettings.get("allow_sending_files") && (cryptoKey == null /* Encrypted chats doesnt allow files */)
     }, [cryptoKey, systemSettings]);
 
@@ -89,8 +91,16 @@ export default function ChatComposeBox(
         <input type={"hidden"} name={"chat_id"} value={chatId}/>
 
         <textarea name={"message"} placeholder={_t("message_box_placeholder")}
-                  disabled={sendingMessage} rows={2} required={!hasFile}
-                  className={"w-full outline-none resize-none px-2 py-3"}/>
+                  disabled={sendingMessage} rows={2} required={!hasFile} enterKeyHint="send"
+                  onKeyDown={(e) => {
+                      if (isMobile)
+                          return false;
+                      if (e.shiftKey || e.ctrlKey || e.altKey)
+                          return false;
+                      if (e.key == "Enter")
+                          formRef.current?.requestSubmit();
+                  }}
+                  className={"w-full outline-none resize-none px-2 py-3 text-sm md:text-md"}/>
 
         {errorText && <div className={cn(
             "absolute w-full left-0 -top-8",

@@ -1,6 +1,6 @@
 const availableDatabases: Record<string, string> = {
-    sqlite: "SQLite",
     mysql: "MySQL | MariaDB",
+    sqlite: "SQLite",
     pgsql: "Postgres",
     sqlsrv: "SQL Server",
 };

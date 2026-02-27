@@ -7,6 +7,7 @@ import useLooper from "@/global/hooks/useLooper";
 import {useRestMethod} from "@/global/contexts/RestApiContext";
 import useEffectAfterApiReady from "@/global/hooks/useEffectAfterApiReady";
 import useSystemSettings from "@/global/contexts/SystemSettingsContext";
+import {useRouter, useSearchParams} from "next/navigation";
 
 const ChatListContext = createContext<{
     initialLoading: boolean,
@@ -26,7 +27,20 @@ export const ChatListProvider = ({children}: { children: React.ReactNode }) => {
     const [openedChat, setOpenedChat] = useState<Chat | undefined>(undefined);
     const [pollingInterval, setPollingInterval] = useState(1500);
 
+    const router = useRouter();
     const rest = useRestMethod();
+    const params = useSearchParams();
+
+    useEffect(() => {
+        const openedChatParam = params.get("opened_chat");
+        if (openedChatParam == null)
+            setOpenedChat(undefined);
+        else if (openedChat?.id != openedChatParam){
+            setOpenedChat(
+                chats?.find(c => c.id == openedChatParam)
+            );
+        }
+    }, [params]);
 
     const loader = useCallback(() => {
         setLoadingChats(true);
@@ -60,13 +74,22 @@ export const ChatListProvider = ({children}: { children: React.ReactNode }) => {
 
     const hasOpenedChat = openedChat != undefined;
 
+    const openChat = (chat: Chat) => {
+        router.push(`/chat?opened_chat=${chat.id}`);
+        setOpenedChat(chat);
+    }
+
+    const closeChat = () => {
+        router.push(`/chat`)
+    }
+
     return (
         <ChatListContext.Provider value={{
             initialLoading: loadingChats && (chats == undefined),
             loading: loadingChats,
             chats: chats ?? [],
-            openChat: setOpenedChat,
-            closeChat: () => setOpenedChat(undefined),
+            openChat,
+            closeChat,
             openedChat: openedChat,
             hasOpenedChat,
             pollingInterval
