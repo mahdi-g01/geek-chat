@@ -365,6 +365,7 @@ class StartupServices
             }
 
             $newContent = str_replace("{app_url}", "$appUrl/api/public", $newContent);
+            $newContent = str_replace("{app_public_storage_url}", "$appUrl/api/storage/app/public", $newContent);
             $newContent = str_replace("{app_frontend}", $appUrl, $newContent);
             $newContent = str_replace("{app_language}", $appLang, $newContent);
             $newContent = str_replace("{app_key}", $appKey, $newContent);

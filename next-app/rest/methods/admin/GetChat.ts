@@ -11,6 +11,7 @@ type OUTPUT = {
     chat_model: Chat,
     users: UserPublic[],
     files_count: number,
+    messages_count: number,
     files_size: number
 };
 

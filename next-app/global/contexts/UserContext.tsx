@@ -7,6 +7,7 @@ import {useRestApi, useRestMethod} from "@/global/contexts/RestApiContext";
 import AuthCheck from "@/rest/methods/auth/AuthCheck";
 import AuthLogout from "@/rest/methods/auth/AuthLogout";
 import {getPreference, removePreference} from "@/global/functions/capacitor_preferences";
+import {ResponseError} from "@/rest/RestMethod";
 
 const UserContext = createContext<{
     user: UserPrivate | undefined,
@@ -39,7 +40,16 @@ export const UserProvider = ({children}: { children: React.ReactNode }) => {
                         resolve(true)
                     })
                 })
-                .catch(() => reject());
+                .catch((err: ResponseError) => {
+                    console.log(err)
+                    if (Number(err.code) == 401) {
+                        removePreference("api_token").then(()=>{
+                            setApiToken(null);
+                            setUser(undefined);
+                            resolve(true)
+                        })
+                    } else reject()
+                });
         });
     }, [rest, setApiToken])
 

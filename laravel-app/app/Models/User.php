@@ -95,7 +95,7 @@ class User extends Authenticatable
         return Attribute::make(get: function () {
             if ($this->avatar_file_path == null)
                 return null;
-            return config('app.url') . '/storage/' . $this->avatar_file_path;
+            return config('app.public_storage_url') . '/' . $this->avatar_file_path;
         });
     }
 

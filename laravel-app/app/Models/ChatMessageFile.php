@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 /** @property int $id
   * @property int $message_id
@@ -59,7 +60,8 @@ class ChatMessageFile extends Model
     {
         return Attribute::get(function () {
             try {
-                return fileSize(storage_path("app/private/".$this->file_path));
+                $disk = config('app.chat_filesystem_driver');
+                return Storage::disk($disk)->size($this->file_path);
             } catch (\Exception $e) {
                 return null;
             }

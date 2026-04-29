@@ -33,6 +33,7 @@ export default function Page() {
     const [chat, setChat] = useState<Chat | undefined>(undefined);
     const [users, setUsers] = useState<UserPublic[] | undefined>(undefined);
     const [filesInfo, setFilesInfo] = useState<{ count: number, size: number } | undefined>(undefined);
+    const [messagesCount, setMessagesCount] = useState<number | undefined>(undefined);
 
     const chatId = params.get("chat_id");
 
@@ -53,6 +54,7 @@ export default function Page() {
             .then((res) => {
                 setChat(res.chat_model);
                 setUsers(res.users);
+                setMessagesCount(res.messages_count);
                 setFilesInfo({
                     count: res.files_count,
                     size: res.files_size
@@ -118,6 +120,8 @@ export default function Page() {
                         )}
                         <p className={"text-sm text-muted-foreground"}>
                             {filesInfo.count} {_t("file")} ({kbToMegabyte(filesInfo.size)} Mb)
+                            {" - "}
+                            {_t("messages_count")}: {messagesCount}
                         </p>
                     </div>
 

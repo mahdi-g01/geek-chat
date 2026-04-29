@@ -135,7 +135,7 @@ export abstract class RestMethod<OUTPUT, INPUT = undefined, SERVER_RESPONSE = Ra
                     this.log(`API server error after requesting: ${this.requestTag}`);
                     reject({
                         message: (response.data as ResponseType<OUTPUT>).message,
-                        code: (response.data as ResponseType<OUTPUT>).status
+                        code: response.status
                     })
                 }
                 this.log(`Successfully fetched api: ${this.requestTag}`);

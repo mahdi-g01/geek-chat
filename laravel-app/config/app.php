@@ -54,6 +54,12 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'public_storage_url' => env('APP_PUBLIC_STORAGE_URL', 'http://localhost/storage/app/public'),
+
+    'chat_filesystem_driver' => env('CHAT_FILESYSTEM_DRIVER', 'local'),
+
+    'manual_maximum_chat_filesystem_space' => env('MANUAL_MAXIMUM_CHAT_FILESYSTEM_SPACE', null),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

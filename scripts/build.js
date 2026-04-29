@@ -80,10 +80,11 @@ await fs.writeFileSync(path.join(buildDist, "api", ".htaccess"), `
     <IfModule mod_rewrite.c>
         RewriteEngine On
 
-        # Deny direct access to any real file/dir that is NOT under public/
+        # Deny direct access to any real file/dir that is NOT under public/ or storage/app/public/
         RewriteCond %{REQUEST_FILENAME} -f [OR]
         RewriteCond %{REQUEST_FILENAME} -d
         RewriteCond %{REQUEST_URI} !^/api/public(/|$) [NC]
+        RewriteCond %{REQUEST_URI} !^/api/storage/app/public(/|$) [NC]
         RewriteRule ^ - [F,L]
 
         # Pass auth headers to PHP

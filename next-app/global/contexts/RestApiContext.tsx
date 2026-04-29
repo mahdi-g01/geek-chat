@@ -48,8 +48,7 @@ export const RestApiProvider = ({baseUrl, children}: { baseUrl: string, children
 
     useEffect(() => {
         getPreference("api_token").then((token) => {
-            if (token)
-                setApiToken(token)
+            if (token) setApiToken(token)
         }).finally(() => setApiTokenRetrieved(true))
     }, []);
 

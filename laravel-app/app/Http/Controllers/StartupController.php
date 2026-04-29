@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\StartupStages;
 use App\Enums\SystemSettingKeys;
 use App\Helpers\SystemConstants;
+use App\Jobs\PostStartupArtisanCommands;
 use App\Models\Admin;
 use App\Models\SystemSetting;
 use App\Models\User;
@@ -168,9 +169,7 @@ class StartupController extends Controller
 
         $this->services->handlePostConfiguration();
 
-        $this->services->handleStorageFolderLink();
-
-        $this->services->cacheConfig();
+        PostStartupArtisanCommands::dispatchAfterResponse();
 
         return jsonResponse(message: __("startup.messages.app_is_ready"));
 

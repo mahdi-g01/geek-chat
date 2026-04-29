@@ -16,6 +16,7 @@ const fa = {
     "save": "ذخیره",
     "view": "مشاهده",
     "file": "فایل",
+    "messages_count": "تعداد پیام ها",
     "logout": "خروج از حساب",
     "start_encrypted_dialog": "ایجاد گفتگوی مخفی",
     "encrypted": "رمزنگاری شده",

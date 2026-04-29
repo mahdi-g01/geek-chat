@@ -33,7 +33,7 @@ class CaptchaServices
         ?string $customKey = null
     ): bool
     {
-        $expectedCorrectPayload = hash_hmac('sha256', ($providedAnswer . "##" . $providedTimeStamp), $customKey ?? config("app.key"));
+        $expectedCorrectPayload = hash_hmac('sha256', (strtoupper($providedAnswer) . "##" . $providedTimeStamp), $customKey ?? config("app.key"));
 
         if (hash_equals($expectedCorrectPayload, $providedHash)) {
 

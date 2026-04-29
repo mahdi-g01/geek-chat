@@ -49,7 +49,7 @@ class ChatManagementService
     /**
      * Find a chat and its details by id.
      */
-    #[ArrayShape(["chat_model" => Chat::class, "users" => "array", "files_count" => "int", "files_size" => "int"])]
+    #[ArrayShape(["chat_model" => Chat::class, "users" => "array", "files_count" => "int", "messages_count" => "int", "files_size" => "int"])]
     public function getDetailedChat(int $id): ?array
     {
         $chat = $this->findChat($id, [
@@ -74,8 +74,9 @@ class ChatManagementService
         return [
             "chat_model" => $chat,
             "users" => $chat->members->map(fn ($member) => $member->user),
+            "messages_count" => $chat->messages()->count(),
             "files_count" => $filesCountSum,
-            "files_size" => $fileSizeSum
+            "files_size" => ($fileSizeSum / 1024) // Bytes to killobytes
         ];
     }
 

@@ -16,6 +16,7 @@ const en: Record<string, string> = {
     "save": "Save",
     "view": "View",
     "file": "File",
+    "messages_count": "Messages count",
     "logout": "Log out",
     "start_encrypted_dialog": "Start encrypted chat",
     "encrypted": "Encrypted",

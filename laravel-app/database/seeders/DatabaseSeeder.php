@@ -22,14 +22,14 @@ class DatabaseSeeder extends Seeder
             ["key" => SystemSettingKeys::APP_NAME, "value" => "GeekChat"],
             ["key" => SystemSettingKeys::AUTH_CAPTCHA_ACTIVATED, "value" => "true"],
             ["key" => SystemSettingKeys::ALLOW_SENDING_CHAT_FILES, "value" => "true"],
-            ["key" => SystemSettingKeys::ACCEPTED_CHAT_FILE_MIMES, "value" => "jpg,jpeg,png,gif,mp4,zip,rar,mp3"],
+            ["key" => SystemSettingKeys::ACCEPTED_CHAT_FILE_MIMES, "value" => "jpg,jpeg,png,gif,mp4,zip,rar,mp3,pdf,apk"],
             ["key" => SystemSettingKeys::MAXIMUM_CHAT_FILE_SIZE, "value" => "50000"],
             ["key" => SystemSettingKeys::STEALTH_MODE_ACTIVATED, "value" => "false"],
             ["key" => SystemSettingKeys::ALLOW_USER_SIGNUP, "value" => "true"],
             ["key" => SystemSettingKeys::ENCRYPTION_ACTIVATED, "value" => "true"],
             ["key" => SystemSettingKeys::CHAT_SOFT_REFRESH_THROTTLE_RATE, "value" => "5000"],
             ["key" => SystemSettingKeys::SEEDER_CHECK, "value" => "true"],
-            ["key" => SystemSettingKeys::USER_TOKEN_TTL, "value" => "2592000"],
+            ["key" => SystemSettingKeys::USER_TOKEN_TTL, "value" => "31536000"],
         ]);
 
     }

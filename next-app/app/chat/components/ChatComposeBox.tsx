@@ -91,7 +91,7 @@ export default function ChatComposeBox(
         <input type={"hidden"} name={"chat_id"} value={chatId}/>
 
         <textarea name={"message"} placeholder={_t("message_box_placeholder")}
-                  disabled={sendingMessage} rows={2} required={!hasFile} enterKeyHint="send"
+                  disabled={sendingMessage} rows={2} required={!hasFile}
                   onKeyDown={(e) => {
                       if (isMobile)
                           return false;

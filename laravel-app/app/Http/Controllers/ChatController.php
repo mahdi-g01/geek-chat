@@ -128,7 +128,7 @@ class ChatController extends Controller
         $requestUserId = Auth::id();
         $receiverUserId = $validator->validated()["receiver_user_id"];
 
-        $chat = Chat::query()
+        $chats = Chat::query()
             ->with(["members", "lastMessageModel"])
             ->where("chat_type", ChatTypes::DIALOG)
             ->whereHas('members', function ($query) use ($requestUserId, $receiverUserId) {
@@ -138,7 +138,17 @@ class ChatController extends Controller
                 ]);
             }, '=', 2)
             ->has('members', '=', 2)
-            ->first();
+            ->get();
+
+        $chat = null;
+        foreach ($chats as $loopChat) {
+            $memberOne = $loopChat->members->where("user_id", $requestUserId)->first();
+            $memberTwo = $loopChat->members->where("user_id", $receiverUserId)->first();
+            if ($memberOne && $memberTwo) {
+                $chat = $loopChat;
+                break;
+            }
+        }
 
         if ($chat == null) {
 
@@ -324,7 +334,7 @@ class ChatController extends Controller
 
         $fileSizeLimitation = SystemSetting::get(SystemSettingKeys::MAXIMUM_CHAT_FILE_SIZE);
         if ($fileSizeLimitation == null)
-            $fileSizeLimitation = $this->fileServices->freeSystemSpaceLeftInKb();
+            $fileSizeLimitation = $this->fileServices->freeSpaceLeftInKb();
 
         $fileAcceptedMimeTypes = SystemSetting::get(SystemSettingKeys::ACCEPTED_CHAT_FILE_MIMES);
         if ($fileAcceptedMimeTypes == null)
@@ -424,9 +434,7 @@ class ChatController extends Controller
 
         $fileModel = ChatMessageFile::query()->find($input["file_id"]);
 
-        return Storage::download(
-            "".$fileModel->file_path
-        );
+        return $this->fileServices->downloadChatFile($fileModel->file_path);
     }
 
     /**
